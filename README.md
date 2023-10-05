@@ -56,13 +56,6 @@
    - is_admin (является ли пользователь администратором) - bool, not null, default: false
    - is_staff (является ли пользователь сотрудником) - bool, not null, default: false
 
-   Связи:
-   - OneToOne с __user_profile__
-   - OneToMany с __reading__
-   - OneToMany с __bookmark__
-   - OneToMany с __review__
-   - OneToMany с __action__
-
 <br>
 
 2. __user_profile__ - профиль пользователя  
@@ -73,7 +66,7 @@
    - Дата рождения (birth_date) - дата, nullable
 
    Связи:
-   - OneToOne с __user__
+   - OneToOne с __user__ (ON DELETE CASCADE)
 
 <br>
 
@@ -82,9 +75,6 @@
    Поля: 
    - Название (name) - строка, not null, уникальная, до 100 символов
    - Описание (description) - текст, nullable
-
-   Cвязи:
-   - OneToMany с __book__
 
 <br>
 
@@ -131,14 +121,10 @@
    - Доступна ли книга (is_available) - bool, not null, default: true
 
    Связи:
-   - ManyToOne с __publisher__
+   - ManyToOne с __publisher__ (ON DELETE RESTRICT)
    - ManyToMany с __language__
    - ManyToMany с __author__
    - ManyToMany с __genre__
-   - OneToMany с __book_file__
-   - OneToMany с __reading__
-   - OneToMany с __bookmark__
-   - OneToMany с __review__
 
 <br>
 
@@ -148,9 +134,6 @@
    - Сокращение (abbreviation) - строка, not null, уникальная, от 1 до 10 символов
    - Описание (description) - текст, nullable
 
-   Связи:
-   - OneToMany с __book_file__
-
 <br>
 
 9. __book_file__ - файл книги
@@ -159,8 +142,8 @@
    - Путь (path) - строка, not null, уникальная, до 255 символов
   
    Связи:
-   - ManyToOne с __book_format__
-   - ManyToOne с __book__
+   - ManyToOne с __book_format__ (ON DELETE NO ACTION)
+   - ManyToOne с __book__ (ON DELETE CASCADE)
 
 <br>
 
@@ -170,8 +153,8 @@
        - Временная метка добавления "в избранные" (added) - timestamp, not null, default: CURRENT_TIMESTAMP
 
       Связи:
-      - ManyToOne с __book__
-      - ManyToOne с __user__
+      - ManyToOne с __book__ (ON DELETE CASCADE)
+      - ManyToOne с __user__ (ON DELETE CASCADE)
 
 <br>
 
@@ -181,8 +164,8 @@
       - Номер страницы (page_number) - int, not null
 
       Связи:
-      - ManyToOne с __book__
-      - ManyToOne с __user__
+      - ManyToOne с __book__ (ON DELETE CASCADE)
+      - ManyToOne с __user__ (ON DELETE CASCADE)
 
 <br>
 
@@ -193,8 +176,8 @@
       - Оценка (rating) - unsigned tinyint, not null, от 1 до 5  
 
       Связи:
-      - ManyToOne с __book__
-      - ManyToOne с __user__
+      - ManyToOne с __book__ (ON DELETE CASCADE)
+      - ManyToOne с __user__ (ON DELETE SET NULL)
 
 <br>
 
@@ -205,8 +188,8 @@
       - text - nullable
 
       Связи: 
-      - ManyToOne с __user__
-      - ManyToOne с __action_type__
+      - ManyToOne с __user__ (ON DELETE SET NULL)
+      - ManyToOne с __action_type__ (ON DELETE NO ACTION)
 
 <br>
 
@@ -214,10 +197,6 @@
 
       Поля:
       - Название (name) - строка, not null, уникальная, до 45 символов
-
-      Связи:
-      - OneToMany с __action__
-
 
 ## Даталогическая модель
 ![Даталогическая модель](library.png)
