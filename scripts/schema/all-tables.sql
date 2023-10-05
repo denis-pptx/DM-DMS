@@ -10,7 +10,11 @@ CREATE TABLE IF NOT EXISTS user (
     email VARCHAR(254) NOT NULL UNIQUE,
     is_active TINYINT(1) NOT NULL DEFAULT 1,
     is_superuser TINYINT(1) NOT NULL DEFAULT 1,
-    is_staff TINYINT(1) NOT NULL DEFAULT 0
+    is_staff TINYINT(1) NOT NULL DEFAULT 0,
+    
+    CHECK (username REGEXP '^[A-Za-z0-9_]{6,}$'),
+    CHECK (CHAR_LENGTH(password) = 64),
+    CHECK (email REGEXP '[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+')
 );
 
 CREATE TABLE IF NOT EXISTS user_profile (
@@ -19,13 +23,17 @@ CREATE TABLE IF NOT EXISTS user_profile (
 	last_name VARCHAR(45),
     birth_date DATE,
     
-    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    CHECK (first_name IS NULL OR first_name != ''),
+    CHECK (last_name IS NULL OR last_name != ''),
 );
 
 CREATE TABLE IF NOT EXISTS publisher (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL UNIQUE,
-    description TEXT
+    description TEXT,
+    
+    CHECK(name != '')
 );
 
 CREATE TABLE IF NOT EXISTS book (
@@ -38,12 +46,16 @@ CREATE TABLE IF NOT EXISTS book (
     is_availbale TINYINT(1) NOT NULL DEFAULT 1,
     publisher_id INT NOT NULL,
     
-    FOREIGN KEY (publisher_id) REFERENCES publisher(id) ON DELETE NO ACTION
+    FOREIGN KEY (publisher_id) REFERENCES publisher(id) ON DELETE NO ACTION,
+    CHECK (title != ''),
+    CHECK (CHAR_LENGTH(isbn) IN (10, 13))
 );
 
 CREATE TABLE IF NOT EXISTS language (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-	name VARCHAR(45) NOT NULL UNIQUE
+	name VARCHAR(45) NOT NULL UNIQUE,
+    
+    CHECK (name != '')
 );
 
 CREATE TABLE IF NOT EXISTS book_language (
@@ -57,7 +69,9 @@ CREATE TABLE IF NOT EXISTS book_language (
 
 CREATE TABLE IF NOT EXISTS genre (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-	name VARCHAR(45) NOT NULL UNIQUE
+	name VARCHAR(45) NOT NULL UNIQUE,
+    
+    CHECK (name != '')
 );
 
 CREATE TABLE IF NOT EXISTS book_genre (
@@ -71,20 +85,24 @@ CREATE TABLE IF NOT EXISTS book_genre (
 
 CREATE TABLE IF NOT EXISTS review (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-    text TEXT NOT NULL,
+    text TEXT,
     rating TINYINT UNSIGNED NOT NULL,
     user_id INT,
     book_id INT NOT NULL,
     
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE SET NULL,
-    FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE
+    FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE,
+    CHECK (rating BETWEEN 1 AND 5)
 );
 
 CREATE TABLE IF NOT EXISTS author (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(45) NOT NULL,
 	last_name VARCHAR(45) NOT NULL,
-	birth_date DATE NOT NULL
+	birth_date DATE NOT NULL,
+    
+    CHECK (first_name != ''),
+    CHECK (last_name != '')
 );
 
 CREATE TABLE IF NOT EXISTS book_author (
@@ -99,7 +117,9 @@ CREATE TABLE IF NOT EXISTS book_author (
 CREATE TABLE IF NOT EXISTS book_format (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	abbreviation VARCHAR(10) NOT NULL UNIQUE,
-	description TEXT
+	description TEXT,
+    
+    CHECK (abbreviation != '')
 );
 
 CREATE TABLE IF NOT EXISTS book_file (
@@ -109,17 +129,19 @@ CREATE TABLE IF NOT EXISTS book_file (
     book_format_id INT NOT NULL,
     
     FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE,
-    FOREIGN KEY (book_format_id) REFERENCES book_format(id) ON DELETE NO ACTION
+    FOREIGN KEY (book_format_id) REFERENCES book_format(id) ON DELETE NO ACTION,
+    CHECK (path != '')
 );
 
 CREATE TABLE IF NOT EXISTS bookmark (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-    page_number INT NOT NULL,
+    page_number INT UNSIGNED NOT NULL,
     book_id INT NOT NULL,
     user_id INT NOT NULL,
     
     FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+	CHECK (page_number > 0)
 );
 
 CREATE TABLE IF NOT EXISTS reading (
