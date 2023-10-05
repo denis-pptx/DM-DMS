@@ -28,6 +28,24 @@ CREATE TABLE IF NOT EXISTS user_profile (
     CHECK (last_name IS NULL OR last_name != '')
 );
 
+CREATE TABLE IF NOT EXISTS action_type (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(45) NOT NULL,
+    
+    CHECK (name != '')
+);
+
+CREATE TABLE IF NOT EXISTS action (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    description TEXT,
+    action_type_id INT NOT NULL,
+    user_id INT,
+    
+    FOREIGN KEY (action_type_id) REFERENCES action_type(id) ON DELETE NO ACTION,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE SET NULL
+);
+
 CREATE TABLE IF NOT EXISTS publisher (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL UNIQUE,
