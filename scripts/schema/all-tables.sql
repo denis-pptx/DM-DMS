@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS user (
     password CHAR(64) NOT NULL,
     email VARCHAR(254) NOT NULL UNIQUE,
     is_active TINYINT(1) NOT NULL DEFAULT 1,
-    is_superuser TINYINT(1) NOT NULL DEFAULT 1,
+    is_superuser TINYINT(1) NOT NULL DEFAULT 0,
     is_staff TINYINT(1) NOT NULL DEFAULT 0,
     
     CHECK (username REGEXP '^[A-Za-z0-9_]{6,}$'),
@@ -18,14 +18,14 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 CREATE TABLE IF NOT EXISTS user_profile (
-	user_id INT PRIMARY KEY AUTO_INCREMENT,
+	user_id INT PRIMARY KEY,
 	first_name VARCHAR(45),
 	last_name VARCHAR(45),
     birth_date DATE,
     
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     CHECK (first_name IS NULL OR first_name != ''),
-    CHECK (last_name IS NULL OR last_name != ''),
+    CHECK (last_name IS NULL OR last_name != '')
 );
 
 CREATE TABLE IF NOT EXISTS publisher (
