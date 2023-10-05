@@ -37,3 +37,34 @@ VALUES
 INSERT INTO user (username, password, email, is_staff) 
 VALUES
 	('kaxxa27', 'c07d33de404d37ef83e1b5e05c26e7f92da11ec8d4070884dae412a8d891dcb1', 'kaxxa2927@gmail.com', 1);
+    
+-- Action types
+INSERT INTO action_type (name)
+VALUES 
+	('REGISTRATION'),
+    ('LOG IN'),
+    ('LOG OUT');
+    
+-- Actions
+INSERT INTO action (timestamp, description, action_type_id, user_id)
+VALUES
+    ('2023-09-01 08:00:00', 'User registered', 1, 1),
+    ('2023-09-01 09:30:00', 'User logged in', 2, 1),
+    ('2023-09-01 12:45:00', 'User logged out', 3, 1),
+    ('2023-09-02 10:15:00', 'User registered', 1, 2),
+    ('2023-09-02 14:20:00', 'User logged in', 2, 2),
+    ('2023-09-02 17:30:00', 'User logged out', 3, 2),
+    ('2023-09-03 11:00:00', 'User registered', 1, 3),
+    ('2023-09-03 14:45:00', 'User logged in', 2, 3),
+    ('2023-09-03 18:20:00', 'User logged out', 3, 3),
+    ('2023-09-04 09:30:00', 'User registered', 1, 4),
+    ('2023-09-04 11:15:00', 'User logged in', 2, 4),
+    ('2023-09-04 14:00:00', 'User logged out', 3, 4),
+    ('2023-09-05 08:45:00', 'User registered', 1, 5),
+    ('2023-09-05 10:30:00', 'User logged in', 2, 5),
+    ('2023-09-05 13:15:00', 'User logged out', 3, 5),
+    ('2023-09-06 12:00:00', 'User registered', 1, 6),
+    ('2023-09-06 14:45:00', 'User logged in', 2, 6),
+    ('2023-09-06 17:30:00', 'User logged out', 3, 6),
+    ('2023-09-07 08:30:00', 'User registered', 1, 7),
+    ('2023-09-07 10:45:00', 'User logged in', 2, 7);
