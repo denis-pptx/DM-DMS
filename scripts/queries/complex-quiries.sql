@@ -104,3 +104,14 @@ SELECT u.id, u.username, COUNT(b.user_id) as boomkarks,
 FROM user u
 	LEFT OUTER JOIN bookmark b ON b.user_id = u.id
 GROUP BY u.id;
+
+
+-- Publisher's books quantity
+SELECT 
+	(SELECT name 
+     FROM publisher 
+     WHERE id = publisher_id) publisher, 
+     COUNT(*) as books
+FROM book b
+GROUP BY publisher_id WITH ROLLUP;
+-- HAVING books > 6;
