@@ -58,6 +58,13 @@ FROM book b
 GROUP BY b.id;
 
 
+-- Books with their instance number
+SELECT bf.book_id, b.title, COUNT(*) instances
+FROM book_file bf 
+	INNER JOIN book b ON b.id = bf.book_id
+GROUP BY book_id;
+
+
 -- Users with Profiles
 SELECT id, username, email, 
 	if(is_active, 'Yes', 'No') is_active, 
