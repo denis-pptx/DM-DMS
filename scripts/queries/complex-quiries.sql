@@ -37,3 +37,18 @@ SELECT b.id as book_id, b.title,
      FROM publisher p
      WHERE b.publisher_id = p.id) publisher
 FROM book b;
+
+-- Books rating by bookmarks
+SELECT b.id, b.title, dense_rank() over (order by COUNT(*) DESC) as place
+FROM book b
+	INNER JOIN bookmark bm ON bm.book_id = b.id
+GROUP BY b.id;
+
+-- Books rating by review
+SELECT b.id, b.title, 
+	dense_rank() over (order by avg(r.rating) DESC) as place, 
+    round(avg(r.rating), 2) as rating, 
+    COUNT(*) as review_number
+FROM book b
+	INNER JOIN review r ON r.book_id = b.id
+GROUP BY b.id;
