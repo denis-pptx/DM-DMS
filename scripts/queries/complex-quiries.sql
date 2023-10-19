@@ -160,3 +160,11 @@ FROM book b
 	INNER JOIN publisher p ON b.publisher_id = p.id
     INNER JOIN review r ON r.book_id = b.id
 GROUP BY p.id;
+
+
+-- Union between user_profile and author
+SELECT first_name, last_name, 'user' as who
+FROM user_profile
+UNION
+SELECT first_name, last_name, 'author'
+FROM author;
