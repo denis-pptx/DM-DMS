@@ -126,3 +126,10 @@ GROUP BY publisher_id WITH ROLLUP;
 -- HAVING books > 6;
 
 
+-- Book files with PDF / ePub format
+SELECT *
+FROM book_file 
+WHERE book_format_id IN 
+	(SELECT id 
+     FROM book_format 
+	 WHERE abbreviation IN ('pdf', 'epub'));
