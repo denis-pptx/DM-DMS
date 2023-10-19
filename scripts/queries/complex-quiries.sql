@@ -133,3 +133,21 @@ WHERE book_format_id IN
 	(SELECT id 
      FROM book_format 
 	 WHERE abbreviation IN ('pdf', 'epub'));
+     
+     
+-- Authors with genres
+WITH 
+	books_authors AS
+	(SELECT book_id, CONCAT_WS(' ', a.first_name, a.last_name) as author_name
+     FROM book_author ba 
+		 INNER JOIN author a ON ba.author_id = a.id
+         INNER JOIN book b ON ba.book_id = b.id),
+    books_genres AS
+    (SELECT book_id, g.name
+     FROM book_genre bg
+		INNER JOIN genre g ON bg.genre_id = g.id
+        INNER JOIN book b ON bg.book_id = b.id)
+SELECT ba.author_name as author, GROUP_CONCAT(bg.name SEPARATOR ', ') as genres
+FROM books_authors ba 
+	INNER JOIN books_genres bg USING(book_id)
+GROUP BY ba.author_name;
