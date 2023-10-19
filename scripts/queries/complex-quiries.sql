@@ -1,5 +1,6 @@
 USE library;
 
+
 -- All info about books [1]
 SELECT b.id as book_id, b.title, 
 	   GROUP_CONCAT(DISTINCT l.name SEPARATOR ', ') as languages,
@@ -18,6 +19,7 @@ FROM book b
     
 	INNER JOIN publisher p on p.id = b.publisher_id
 GROUP BY b.id;
+
 
 -- All info about books [2]
 SELECT b.id as book_id, b.title,
@@ -38,11 +40,13 @@ SELECT b.id as book_id, b.title,
      WHERE b.publisher_id = p.id) publisher
 FROM book b;
 
+
 -- Books rating by bookmarks
 SELECT b.id, b.title, dense_rank() over (order by COUNT(*) DESC) as place
 FROM book b
 	INNER JOIN bookmark bm ON bm.book_id = b.id
 GROUP BY b.id;
+
 
 -- Books rating by review
 SELECT b.id, b.title, 
@@ -52,3 +56,19 @@ SELECT b.id, b.title,
 FROM book b
 	INNER JOIN review r ON r.book_id = b.id
 GROUP BY b.id;
+
+
+-- Users with Profiles
+SELECT id, username, email, 
+	if(is_active, 'Yes', 'No') is_active, 
+    CASE
+		WHEN is_superuser THEN 'Yes'
+        ELSE 'No'
+    END is_superuser,
+    CASE is_staff
+		WHEN 0 THEN 'No'
+        ELSE 'Yes'
+    END is_staff,
+    CONCAT(first_name, ' ', last_name) as name, birth_date
+FROM user u
+	LEFT OUTER JOIN user_profile p ON p.user_id = u.id;
