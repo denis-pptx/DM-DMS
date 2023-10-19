@@ -58,6 +58,14 @@ FROM book b
 GROUP BY b.id;
 
 
+-- Rating by genre
+SELECT g.name, ROUND(AVG(rating), 2) as rating, dense_rank() over (order by avg(rating) desc) as place
+FROM book_genre bg 
+    INNER JOIN genre g ON g.id = bg.genre_id
+    INNER JOIN review r ON r.book_id = bg.book_id
+GROUP BY genre_id;
+
+
 -- Books with their instance number
 SELECT bf.book_id, b.title, COUNT(*) instances
 FROM book_file bf 
@@ -82,7 +90,8 @@ FROM user u
     
     
 -- Users' bookmark number
-SELECT u.id, u.username, COUNT(b.user_id) boomkarks, dense_rank() over (order by COUNT(b.user_id) DESC)
+SELECT u.id, u.username, COUNT(b.user_id) boomkarks, 
+	dense_rank() over (order by COUNT(b.user_id) DESC) as place
 FROM user u
 	LEFT OUTER JOIN bookmark b ON b.user_id = u.id
 GROUP BY u.id;
