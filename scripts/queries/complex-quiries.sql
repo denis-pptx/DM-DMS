@@ -79,3 +79,10 @@ SELECT id, username, email,
     CONCAT(first_name, ' ', last_name) as name, birth_date
 FROM user u
 	LEFT OUTER JOIN user_profile p ON p.user_id = u.id;
+    
+    
+-- Users' bookmark number
+SELECT u.id, u.username, COUNT(b.user_id) boomkarks, dense_rank() over (order by COUNT(b.user_id) DESC)
+FROM user u
+	LEFT OUTER JOIN bookmark b ON b.user_id = u.id
+GROUP BY u.id;
