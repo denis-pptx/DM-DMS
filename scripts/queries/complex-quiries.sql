@@ -82,6 +82,15 @@ FROM book_file bf
 GROUP BY book_id;
 
 
+-- Books that are being read
+SELECT b.id, b.title
+FROM book b 
+WHERE EXISTS 
+	(SELECT 1 
+     FROM bookmark bm 
+     WHERE bm.book_id = b.id);
+
+
 -- Users with Profiles
 SELECT id, username, email, 
 	if(is_active, 'Yes', 'No') is_active, 
@@ -115,3 +124,5 @@ SELECT
 FROM book b
 GROUP BY publisher_id WITH ROLLUP;
 -- HAVING books > 6;
+
+
