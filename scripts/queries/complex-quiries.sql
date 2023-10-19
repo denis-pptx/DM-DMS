@@ -151,3 +151,12 @@ SELECT ba.author_name as author, GROUP_CONCAT(bg.name SEPARATOR ', ') as genres
 FROM books_authors ba 
 	INNER JOIN books_genres bg USING(book_id)
 GROUP BY ba.author_name;
+
+
+-- Publisher's rating
+SELECT p.name as publisher, avg(r.rating) as rating, 
+	dense_rank() over (order by avg(r.rating) desc) as place
+FROM book b 
+	INNER JOIN publisher p ON b.publisher_id = p.id
+    INNER JOIN review r ON r.book_id = b.id
+GROUP BY p.id;
