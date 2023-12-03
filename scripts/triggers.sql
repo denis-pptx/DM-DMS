@@ -1,6 +1,6 @@
 USE library;
 
-# check_book_availability - reviews only for available books
+# Reviews only for available books
 DELIMITER // 
 CREATE TRIGGER check_book_availability
 BEFORE INSERT ON review
@@ -26,4 +26,39 @@ INSERT INTO review (text, rating, user_id, book_id)
 VALUES 
 	("Test text",  5, 10, 1); 
 */
+
+
+
+# Maintain an average book rating
+DELIMITER // 
+CREATE TRIGGER book_average_rating_insert
+AFTER INSERT ON review
+FOR EACH ROW
+BEGIN
+    UPDATE book
+    SET average_rating = (SELECT AVG(rating) FROM review WHERE book_id = NEW.book_id)
+    WHERE id = NEW.book_id;
+END;
+//
+
+CREATE TRIGGER book_average_rating_update
+AFTER UPDATE ON review
+FOR EACH ROW
+BEGIN
+    UPDATE book
+    SET average_rating = (SELECT AVG(rating) FROM review WHERE book_id = NEW.book_id)
+    WHERE id = NEW.book_id;
+END;
+//
+
+CREATE TRIGGER book_average_rating_delete
+AFTER DELETE ON review
+FOR EACH ROW
+BEGIN
+    UPDATE book
+    SET average_rating = (SELECT AVG(rating) FROM review WHERE book_id = OLD.book_id)
+    WHERE id = OLD.book_id;
+END;
+//
+DELIMITER ;
 
