@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS book (
     publication_date DATE NOT NULL,
     added TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     isbn VARCHAR(13) NOT NULL,
-    is_availbale TINYINT(1) NOT NULL DEFAULT 1,
+    is_available TINYINT(1) NOT NULL DEFAULT 1,
     publisher_id INT NOT NULL,
     
     FOREIGN KEY (publisher_id) REFERENCES publisher(id) ON DELETE NO ACTION,
