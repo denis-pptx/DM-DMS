@@ -58,3 +58,20 @@ DELIMITER ;
 
 # Test procedure
 # CALL GetBooksByParameters(NULL, 1, 3, NULL);
+
+
+
+
+# Books reading by user
+DELIMITER //
+CREATE PROCEDURE GetReadingList(IN p_user_id INT)
+BEGIN
+    SELECT b.*
+    FROM book b INNER JOIN reading r 
+		ON r.book_id = b.id
+	WHERE r.user_id = p_user_id;
+END //
+DELIMITER ;
+
+# Test procedure
+# CALL GetReadingList(1);
