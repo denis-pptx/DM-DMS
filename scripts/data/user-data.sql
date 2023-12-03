@@ -1,5 +1,13 @@
 USE library;
 
+-- Action types
+INSERT INTO action_type (id, name)
+VALUES 
+	(1, 'REGISTRATION'),
+    (2, 'LOG IN'),
+    (3, 'LOG OUT'),
+    (4, 'USER ADDED');
+    
 -- Default users 
 INSERT INTO user (id, username, password, email)
 VALUES
@@ -37,13 +45,6 @@ VALUES
 INSERT INTO user (username, password, email, is_staff) 
 VALUES
 	('kaxxa27', 'c07d33de404d37ef83e1b5e05c26e7f92da11ec8d4070884dae412a8d891dcb1', 'kaxxa2927@gmail.com', 1);
-    
--- Action types
-INSERT INTO action_type (name)
-VALUES 
-	('REGISTRATION'),
-    ('LOG IN'),
-    ('LOG OUT');
     
 -- Actions
 INSERT INTO action (timestamp, description, action_type_id, user_id)

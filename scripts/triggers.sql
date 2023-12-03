@@ -62,3 +62,16 @@ END;
 //
 DELIMITER ;
 
+
+
+# Log user adding
+DELIMITER // 
+CREATE TRIGGER log_user_add
+AFTER INSERT on user
+FOR EACH ROW
+BEGIN
+	INSERT INTO action (description, action_type_id, user_id) 
+    VALUES (CONCAT('username: ', NEW.username), 4, NEW.id);
+END;
+//
+DELIMITER ;
