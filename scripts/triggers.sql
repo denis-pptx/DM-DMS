@@ -19,7 +19,7 @@ DELIMITER ;
 # Test check_book_availability
 /*
 UPDATE book
-SET is_available = 1
+SET is_available = 0
 WHERE id = 1;
 
 INSERT INTO review (text, rating, user_id, book_id) 
@@ -61,7 +61,6 @@ BEGIN
 END;
 //
 DELIMITER ;
-
 
 
 # Log user adding
