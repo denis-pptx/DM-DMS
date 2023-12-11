@@ -5,8 +5,7 @@ CREATE PROCEDURE CreateUser(
     IN p_password VARCHAR(100),
     IN p_email VARCHAR(254),
     IN p_is_active TINYINT(1),
-    IN p_is_superuser TINYINT(1),
-    IN p_is_staff TINYINT(1)
+    IN p_is_admin TINYINT(0)
 )
 BEGIN
     DECLARE existing_user INT;
@@ -16,12 +15,13 @@ BEGIN
     WHERE username = p_username OR email = p_email;
     
     IF existing_user = 0 THEN
-        INSERT INTO user(username, password, email, is_active, is_superuser, is_staff)
-        VALUES (p_username, SHA2(p_password, 256), p_email, p_is_active, p_is_superuser, p_is_staff);
+        INSERT INTO user(username, password, email, is_active, is_admin)
+        VALUES (p_username, SHA2(p_password, 256), p_email, p_is_active, p_is_admin);
         
         SELECT 'User created successfully' AS result;
     ELSE
-        SELECT 'Username or email already exists' AS result;
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Username or email already exists';
     END IF;
 END; 
 //

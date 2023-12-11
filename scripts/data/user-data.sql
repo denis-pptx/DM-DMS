@@ -37,14 +37,9 @@ VALUES
     (10, 'Emily', 'Clark', '1994-04-02');
     
 -- Superusers
-INSERT INTO user (username, password, email, is_superuser) 
+INSERT INTO user (username, password, email, is_admin) 
 VALUES
-	('denisko', '7e6b0a3624809e0f35770a1fc2138ec58a0d4f964cd9b425fa59d7805a33df92', 'denis.pptx@gmail.com', 1);
-    
--- Staff
-INSERT INTO user (username, password, email, is_staff) 
-VALUES
-	('kaxxa27', 'c07d33de404d37ef83e1b5e05c26e7f92da11ec8d4070884dae412a8d891dcb1', 'kaxxa2927@gmail.com', 1);
+	('denisko', '10a6e6cc8311a3e2bcc09bf6c199adecd5dd59408c343e926b129c4914f3cb01', 'denis.pptx@gmail.com', 1); # pass - test_password
     
 -- Actions
 INSERT INTO action (timestamp, description, action_type_id, user_id)

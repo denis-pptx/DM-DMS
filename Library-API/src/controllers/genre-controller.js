@@ -6,7 +6,7 @@ const GenreController = {
             const [rows] = await req.db.query('SELECT * FROM genre');
             res.json(rows);
         } catch (e) {
-            return next(e)
+            next(e);
         } finally {
             req.db && req.db.end();
         }
@@ -24,7 +24,7 @@ const GenreController = {
 
             res.status(200).json(rows[0]);
         } catch (e) {
-            return next(e);
+            next(e);
         } finally {
             req.db && req.db.end();
         }
@@ -33,10 +33,10 @@ const GenreController = {
     create: async (req, res, next) => {
         const { name } = req.body;
         try {
-            const [result] = await req.db.query('INSERT INTO genre (name) VALUES (?)', [name]);
-            res.status(201);
+            await req.db.query('INSERT INTO genre (name) VALUES (?)', [name]);
+            res.status(201).json({message: 'Genre created successfully'});
         } catch (e) {
-            return next(e);
+            next(e);
         } finally {
             req.db && req.db.end();
         }
@@ -55,7 +55,7 @@ const GenreController = {
 
             res.status(200).json({message: 'Genre updated successfully'});
         } catch (e) {
-            return next(e);
+            next(e);
         } finally {
             req.db && req.db.end();
         }
@@ -73,7 +73,7 @@ const GenreController = {
 
             res.status(200).json({message: 'Genre deleted successfully'});
         } catch (e) {
-            return next(e);
+            next(e);
         } finally {
             req.db && req.db.end();
         }

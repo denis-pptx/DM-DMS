@@ -9,8 +9,7 @@ CREATE TABLE IF NOT EXISTS user (
     password CHAR(64) NOT NULL,
     email VARCHAR(254) NOT NULL UNIQUE,
     is_active TINYINT(1) NOT NULL DEFAULT 1,
-    is_superuser TINYINT(1) NOT NULL DEFAULT 0,
-    is_staff TINYINT(1) NOT NULL DEFAULT 0,
+    is_admin TINYINT(1) NOT NULL DEFAULT 0,
     
     CHECK (username REGEXP '^[A-Za-z0-9_]{6,}$'),
     CHECK (CHAR_LENGTH(password) = 64),

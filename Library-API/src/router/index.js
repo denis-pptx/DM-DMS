@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const genreRouter = require('./genre-router');
 
-router.use('/genre', genreRouter);
+router.use('/genre', require('./genre-router'));
+router.use('/auth', require('./auth-router'));
 
 module.exports = router;
