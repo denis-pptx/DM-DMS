@@ -1,14 +1,12 @@
 require('dotenv').config()
 const express = require('express');
 const router = require('./router/index');
-const dbMiddleware = require('./middleware/db-middleware');
 const errorMiddleware = require('./middleware/error-middleware');
 
 const PORT = process.env.PORT || 3000;
 const app = express()
 app.use(express.json());
 
-app.use(dbMiddleware);
 app.use('/api', router);
 app.use(errorMiddleware);
 
