@@ -81,7 +81,122 @@ const BookController = {
         } catch (e) {
             next(e);
         }
+    },
+
+    add_language: async (req, res, next) => {
+        const { book_id, language_id } = req.body;
+
+        try {
+            const query = `
+                INSERT INTO book_language (book_id, language_id)
+                VALUES (?, ?)
+            `;
+
+            await pool.query(query, [book_id, language_id]);
+
+            res.status(200).json({ message: 'Language added to book successfully' });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    remove_language: async (req, res, next) => {
+        const { book_id, language_id } = req.body;
+
+        try {
+            const query = `
+                DELETE FROM book_language
+                WHERE (book_id, language_id) = (?, ?)
+            `;
+
+            const [result] = await pool.query(query, [book_id, language_id]);
+
+            if (!result.affectedRows) {
+                return next(ApiError.BadRequest("Book with so language not found"));
+            }
+
+            res.status(200).json({ message: 'Language removed from successfully' });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    add_author: async (req, res, next) => {
+        const { book_id, author_id } = req.body;
+
+        try {
+            const query = `
+                INSERT INTO book_author (book_id, author_id)
+                VALUES (?, ?)
+            `;
+
+            await pool.query(query, [book_id, author_id]);
+
+            res.status(200).json({ message: 'Author added to book successfully' });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    remove_author: async (req, res, next) => {
+        const { book_id, author_id } = req.body;
+
+        try {
+            const query = `
+                DELETE FROM book_author
+                WHERE (book_id, author_id) = (?, ?)
+            `;
+
+            const [result] = await pool.query(query, [book_id, author_id]);
+
+            if (!result.affectedRows) {
+                return next(ApiError.BadRequest("Book with so author not found"));
+            }
+
+            res.status(200).json({ message: 'Author removed from book successfully' });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    add_genre: async (req, res, next) => {
+        const { book_id, genre_id } = req.body;
+
+        try {
+            const query = `
+                INSERT INTO book_genre (book_id, genre_id)
+                VALUES (?, ?)
+            `;
+
+            await pool.query(query, [book_id, genre_id]);
+
+            res.status(200).json({ message: 'Genre added to book successfully' });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    remove_genre: async (req, res, next) => {
+        const { book_id, genre_id } = req.body;
+
+        try {
+            const query = `
+                DELETE FROM book_genre
+                WHERE (book_id, genre_id) = (?, ?)
+            `;
+
+            const [result] = await pool.query(query, [book_id, genre_id]);
+
+            if (!result.affectedRows) {
+                return next(ApiError.BadRequest("Book with so genre not found"));
+            }
+
+            res.status(200).json({ message: 'Genre removed from book successfully' });
+        } catch (e) {
+            next(e);
+        }
     }
+
 };
 
 module.exports = BookController;
