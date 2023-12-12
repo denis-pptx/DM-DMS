@@ -3,9 +3,12 @@ const pool = require('../db/connection-pool');
 
 const BookController = {
     getAll: async (req, res, next) => {
+        const { language_id, author_id, genre_id, publisher_id } = req.query;
+
         try {
-            const [rows] = await pool.query('SELECT * FROM book');
-            res.json(rows);
+            const [rows] = await pool.query('CALL GetBooksByParameters(?, ?, ?, ?)', [language_id, author_id, genre_id, publisher_id]);
+
+            res.json(rows[0]);
         } catch (e) {
             next(e);
         }

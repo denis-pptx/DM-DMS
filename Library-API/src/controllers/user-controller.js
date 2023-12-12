@@ -53,7 +53,7 @@ const UserController = {
     },
 
     delete: async (req, res, next) => {
-        const id = req.params.id;   
+        const id = req.params.id;
         const user_id = req.user.id;
 
         try {
@@ -67,6 +67,18 @@ const UserController = {
                 return next(ApiError.NotFound("User not found"));
             }
             res.status(200).json({ message: 'User deleted successfully' });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    readings: async (req, res, next) => {
+        const id = req.user.id;
+
+        try {
+            const [rows] = await pool.query('CALL GetReadingList(?)', [id]);
+
+            res.json(rows[0]);
         } catch (e) {
             next(e);
         }
