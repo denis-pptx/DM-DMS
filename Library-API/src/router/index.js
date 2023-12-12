@@ -10,5 +10,6 @@ router.use('/book_file', require('./book-file-router'));
 router.use('/book', require('./book-router'));
 router.use('/review', require('./review-router'));
 router.use('/bookmark', require('./bookmark-router'));
+router.use('/reading', require('./reading-router'));
 
 module.exports = router;
