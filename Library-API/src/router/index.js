@@ -6,5 +6,6 @@ router.use('/publisher', require('./publisher-router'));
 router.use('/author', require('./author-router'));
 router.use('/language', require('./language-router'));
 router.use('/book_format', require('./book-format-router'));
+router.use('/book', require('./book-router'));
 
 module.exports = router;
