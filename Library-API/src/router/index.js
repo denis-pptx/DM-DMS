@@ -12,5 +12,6 @@ router.use('/review', require('./review-router'));
 router.use('/bookmark', require('./bookmark-router'));
 router.use('/reading', require('./reading-router'));
 router.use('/user', require('./user-router'));
+router.use('/user_profile', require('./user-profile-router'));
 
 module.exports = router;

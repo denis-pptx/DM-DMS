@@ -30,7 +30,7 @@ const AuthController = {
             const user = rows[0];
 
             if (!user || user.password !== crypto.createHash('sha256').update(password).digest('hex')) {
-                return next(ApiError.UnauthorizedError());
+                return res.status(401).json({ error: 'Invalid login or password' });
             }
 
             const payload = {
