@@ -18,7 +18,7 @@ const GenreController = {
             const [rows] = await pool.query('SELECT * FROM genre WHERE id = ?', [id]);
 
             if (!rows.length) {
-                return next(ApiError.BadRequest("Genre not found"));
+                return next(ApiError.NotFound("Genre not found"));
             }
 
             res.status(200).json(rows[0]);
@@ -45,7 +45,7 @@ const GenreController = {
             const [result] = await pool.query('UPDATE genre SET name = ? WHERE id = ?', [name, id]);
 
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Genre not found"));
+                return next(ApiError.NotFound("Genre not found"));
             }
 
             res.status(200).json({message: 'Genre updated successfully'});
@@ -61,7 +61,7 @@ const GenreController = {
             const [result] = await pool.query('DELETE FROM genre WHERE id = ?', [id]);
             
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Genre not found"));
+                return next(ApiError.NotFound("Genre not found"));
             }
 
             res.status(200).json({message: 'Genre deleted successfully'});

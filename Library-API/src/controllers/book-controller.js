@@ -18,7 +18,7 @@ const BookController = {
             const [rows] = await pool.query('SELECT * FROM book WHERE id = ?', [id]);
 
             if (!rows.length) {
-                return next(ApiError.BadRequest("Book not found"));
+                return next(ApiError.NotFound("Book not found"));
             }
 
             res.status(200).json(rows[0]);
@@ -58,7 +58,7 @@ const BookController = {
             const [result] = await pool.query(query, [title, description, publication_date, isbn, is_available, publisher_id, id]);
 
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Book not found"));
+                return next(ApiError.NotFound("Book not found"));
             }
 
             res.status(200).json({ message: 'Book updated successfully' });
@@ -74,7 +74,7 @@ const BookController = {
             const [result] = await pool.query('DELETE FROM book WHERE id = ?', [id]);
 
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Book not found"));
+                return next(ApiError.NotFound("Book not found"));
             }
 
             res.status(200).json({ message: 'Book deleted successfully' });
@@ -112,7 +112,7 @@ const BookController = {
             const [result] = await pool.query(query, [book_id, language_id]);
 
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Book with so language not found"));
+                return next(ApiError.NotFound("Book with so language not found"));
             }
 
             res.status(200).json({ message: 'Language removed from successfully' });
@@ -150,7 +150,7 @@ const BookController = {
             const [result] = await pool.query(query, [book_id, author_id]);
 
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Book with so author not found"));
+                return next(ApiError.NotFound("Book with so author not found"));
             }
 
             res.status(200).json({ message: 'Author removed from book successfully' });
@@ -188,7 +188,7 @@ const BookController = {
             const [result] = await pool.query(query, [book_id, genre_id]);
 
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Book with so genre not found"));
+                return next(ApiError.NotFound("Book with so genre not found"));
             }
 
             res.status(200).json({ message: 'Genre removed from book successfully' });

@@ -18,7 +18,7 @@ const BookFormatController = {
             const [rows] = await pool.query('SELECT * FROM book_format WHERE id = ?', [id]);
 
             if (!rows.length) {
-                return next(ApiError.BadRequest("Book format not found"));
+                return next(ApiError.NotFound("Book format not found"));
             }
 
             res.status(200).json(rows[0]);
@@ -45,7 +45,7 @@ const BookFormatController = {
             const [result] = await pool.query('UPDATE book_format SET abbreviation = ?, description = ? WHERE id = ?', [abbreviation, description, id]);
 
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Book format not found"));
+                return next(ApiError.NotFound("Book format not found"));
             }
 
             res.status(200).json({message: 'Book format updated successfully'});
@@ -61,7 +61,7 @@ const BookFormatController = {
             const [result] = await pool.query('DELETE FROM book_format WHERE id = ?', [id]);
             
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Book format not found"));
+                return next(ApiError.NotFound("Book format not found"));
             }
 
             res.status(200).json({message: 'Book format deleted successfully'});

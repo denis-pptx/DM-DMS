@@ -8,7 +8,7 @@ module.exports = function (err, req, res, next) {
     }
 
     if (err.sql) {
-        return res.status(404).json({
+        return res.status(400).json({
             message: err.sqlMessage || '',
             state: err.sqlState || '',
             sql: err.sql

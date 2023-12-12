@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const pool = require('../db/connection-pool');
+const ApiError = require('../exceptions/api-error');
 
 const AuthController = {
     register: async (req, res, next) => {
@@ -29,7 +30,7 @@ const AuthController = {
             const user = rows[0];
 
             if (!user || user.password !== crypto.createHash('sha256').update(password).digest('hex')) {
-                return res.status(401).json({ error: 'Invalid login or password' });
+                return next(ApiError.UnauthorizedError());
             }
 
             const payload = {

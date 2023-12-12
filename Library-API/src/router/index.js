@@ -8,5 +8,6 @@ router.use('/language', require('./language-router'));
 router.use('/book_format', require('./book-format-router'));
 router.use('/book_file', require('./book-file-router'));
 router.use('/book', require('./book-router'));
+router.use('/review', require('./review-router'));
 
 module.exports = router;

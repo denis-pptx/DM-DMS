@@ -5,6 +5,10 @@ module.exports = class ApiError {
         this.errors = errors;
     }
 
+    static BadRequest(message, errors) {
+        return new ApiError(400, message, errors);
+    }
+
     static UnauthorizedError() {
         return new ApiError(401, "User unauthorized");
     }
@@ -12,8 +16,8 @@ module.exports = class ApiError {
     static Forbidden() {
         return new ApiError(403, "Forbidden");
     }
-    
-    static BadRequest(message, errors) {
-        return new ApiError(404, message, errors);
+
+    static NotFound(message) {
+        return new ApiError(404, message);
     }
 }

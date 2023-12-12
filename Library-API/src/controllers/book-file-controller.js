@@ -18,7 +18,7 @@ const BookFileController = {
             const [rows] = await pool.query('SELECT * FROM book_file WHERE id = ?', [id]);
 
             if (!rows.length) {
-                return next(ApiError.BadRequest("Book file not found"));
+                return next(ApiError.NotFound("Book file not found"));
             }
 
             res.status(200).json(rows[0]);
@@ -57,7 +57,7 @@ const BookFileController = {
             const [result] = await pool.query(query, [path, book_id, book_format_id, id]);
 
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Book file not found"));
+                return next(ApiError.NotFound("Book file not found"));
             }
 
             res.status(200).json({message: 'Book file updated successfully'});
@@ -73,7 +73,7 @@ const BookFileController = {
             const [result] = await pool.query('DELETE FROM book_file WHERE id = ?', [id]);
             
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Book file not found"));
+                return next(ApiError.NotFound("Book file not found"));
             }
 
             res.status(200).json({message: 'Book file deleted successfully'});

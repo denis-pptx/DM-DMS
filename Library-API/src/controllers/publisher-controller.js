@@ -18,7 +18,7 @@ const PublisherController = {
             const [rows] = await pool.query('SELECT * FROM publisher WHERE id = ?', [id]);
 
             if (!rows.length) {
-                return next(ApiError.BadRequest("Publisher not found"));
+                return next(ApiError.NotFound("Publisher not found"));
             }
 
             res.status(200).json(rows[0]);
@@ -45,7 +45,7 @@ const PublisherController = {
             const [result] = await pool.query('UPDATE publisher SET name = ?, description = ? WHERE id = ?', [name, description, id]);
 
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Publisher not found"));
+                return next(ApiError.NotFound("Publisher not found"));
             }
 
             res.status(200).json({message: 'Publisher updated successfully'});
@@ -61,7 +61,7 @@ const PublisherController = {
             const [result] = await pool.query('DELETE FROM publisher WHERE id = ?', [id]);
             
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Publisher not found"));
+                return next(ApiError.NotFound("Publisher not found"));
             }
 
             res.status(200).json({message: 'Publisher deleted successfully'});

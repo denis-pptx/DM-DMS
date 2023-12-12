@@ -18,7 +18,7 @@ const LanguageController = {
             const [rows] = await pool.query('SELECT * FROM language WHERE id = ?', [id]);
 
             if (!rows.length) {
-                return next(ApiError.BadRequest("Language not found"));
+                return next(ApiError.NotFound("Language not found"));
             }
 
             res.status(200).json(rows[0]);
@@ -45,7 +45,7 @@ const LanguageController = {
             const [result] = await pool.query('UPDATE language SET name = ? WHERE id = ?', [name, id]);
 
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Language not found"));
+                return next(ApiError.NotFound("Language not found"));
             }
 
             res.status(200).json({message: 'Language updated successfully'});
@@ -61,7 +61,7 @@ const LanguageController = {
             const [result] = await pool.query('DELETE FROM language WHERE id = ?', [id]);
             
             if (!result.affectedRows) {
-                return next(ApiError.BadRequest("Language not found"));
+                return next(ApiError.NotFound("Language not found"));
             }
 
             res.status(200).json({message: 'Language deleted successfully'});
