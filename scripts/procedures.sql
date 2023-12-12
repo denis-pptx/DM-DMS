@@ -44,7 +44,16 @@ CREATE PROCEDURE UpdateUser(
 )
 BEGIN
     DECLARE existing_user INT;
-
+	
+    SELECT COUNT(*) INTO existing_user
+    FROM user
+    WHERE id = p_user_id;
+    
+    IF existing_user != 1 THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'User not found';
+    END IF;
+        
     SELECT COUNT(*) INTO existing_user
     FROM user
     WHERE (username = p_username OR email = p_email) AND id != p_user_id;
@@ -67,7 +76,6 @@ BEGIN
 END; 
 //
 DELIMITER ;
-
 
 
 # Books by parameters procedure
