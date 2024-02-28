@@ -5,8 +5,7 @@ CREATE PROCEDURE CreateUser(
     IN p_password VARCHAR(100),
     IN p_email VARCHAR(254),
     IN p_is_active TINYINT(1),
-    IN p_is_superuser TINYINT(1),
-    IN p_is_staff TINYINT(1)
+    IN p_is_admin TINYINT(0)
 )
 BEGIN
     DECLARE existing_user INT;
@@ -16,12 +15,13 @@ BEGIN
     WHERE username = p_username OR email = p_email;
     
     IF existing_user = 0 THEN
-        INSERT INTO user(username, password, email, is_active, is_superuser, is_staff)
-        VALUES (p_username, SHA2(p_password, 256), p_email, p_is_active, p_is_superuser, p_is_staff);
+        INSERT INTO user(username, password, email, is_active, is_admin)
+        VALUES (p_username, SHA2(p_password, 256), p_email, p_is_active, p_is_admin);
         
         SELECT 'User created successfully' AS result;
     ELSE
-        SELECT 'Username or email already exists' AS result;
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Username or email already exists';
     END IF;
 END; 
 //
@@ -31,6 +31,51 @@ DELIMITER ;
 # CALL CreateUser("denis_test", "test_password", "qwe@mail.ru", 1, 0, 0);
 
 
+
+# Update user procedure
+DELIMITER //
+CREATE PROCEDURE UpdateUser(
+    IN p_user_id INT,
+    IN p_username VARCHAR(20),
+    IN p_password VARCHAR(100),
+    IN p_email VARCHAR(254),
+    IN p_is_active TINYINT(1),
+    IN p_is_admin TINYINT(0)
+)
+BEGIN
+    DECLARE existing_user INT;
+	
+    SELECT COUNT(*) INTO existing_user
+    FROM user
+    WHERE id = p_user_id;
+    
+    IF existing_user != 1 THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'User not found';
+    END IF;
+        
+    SELECT COUNT(*) INTO existing_user
+    FROM user
+    WHERE (username = p_username OR email = p_email) AND id != p_user_id;
+
+    IF existing_user = 0 THEN
+        UPDATE user
+        SET
+            username = p_username,
+            password = SHA2(p_password, 256),
+            email = p_email,
+            is_active = p_is_active,
+            is_admin = p_is_admin
+        WHERE id = p_user_id;
+
+        SELECT 'User updated successfully' AS result;
+    ELSE
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Username or email already exists';
+    END IF;
+END; 
+//
+DELIMITER ;
 
 
 # Books by parameters procedure

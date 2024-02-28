@@ -95,13 +95,9 @@ WHERE EXISTS
 SELECT id, username, email, 
 	if(is_active, 'Yes', 'No') is_active, 
     CASE
-		WHEN is_superuser THEN 'Yes'
+		WHEN is_admin THEN 'Yes'
         ELSE 'No'
-    END is_superuser,
-    CASE is_staff
-		WHEN 0 THEN 'No'
-        ELSE 'Yes'
-    END is_staff,
+    END is_admin,
     CONCAT(first_name, ' ', last_name) as name, birth_date
 FROM user u
 	LEFT OUTER JOIN user_profile p ON p.user_id = u.id;
